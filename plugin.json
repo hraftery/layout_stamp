@@ -1,0 +1,26 @@
+{
+    "$schema": "https://go.kicad.org/api/schemas/v1",
+    "identifier": "ee.empirical.kipy.layout_stamp",
+    "name": "Layout Stamp",
+    "description": "Replicate layout properties of a footprint",
+    "runtime": {
+        "type": "python",
+        "min_version": "3.10"
+    },
+    "actions": [
+        {
+            "identifier": "copy-layout",
+            "name": "Copy Layout",
+            "description": "Copy layout characteristics of the selected footprint",
+            "show-button": true,
+            "scopes": [
+                "pcb"
+            ],
+            "entrypoint": "layout_stamp.py",
+            "icons-light": [
+                "icons/layout_stamp_24.png",
+                "icons/layout_stamp_48.png"
+            ]
+        }
+    ]
+}
