@@ -9,32 +9,17 @@ from kipy.board_types import BoardText, FootprintInstance, Field
 
 import sys
 import os
-import tempfile
-import pickle
-import shutil
-#import kipy.proto.common.types.base_types_pb2
-#import json
 
-def copy_selected_footprint_properties():
+def serialise_selected_footprint():
     selection = board.get_selection()
     if len(selection) != 1:
         print("Select a single footprint first.")
         sys.exit()
 
-    # TODO: Very hard to serialise a dict of KiCad properties.
-    #       Instead, serialise the whole selection and extract properties later.
-    #return board.get_selection_as_string()
+    # Turns out to be very hard to serialise a dict of KiCad properties.
+    # Serialise the whole footprint instead, using the same protobufs format
+    # used to get it through the API.
     return selection[0]._proto.SerializeToString()
-
-    s = selection[0]
-    props = {}
-    props['position'] = s.position._proto.SerializeToString()
-    props['orientation'] = s.orientation._proto.SerializeToString()
-    # We're assuming we only want to copy the footprint instance properties, so ignore
-    # free text objects, which are a property of the footprint in the library.
-    props['fields'] = [f._proto.SerializeToString() for f in s.texts_and_fields if isinstance(f, Field)]
-
-    return props
 
 def get_properties_from_serialised_footprint(ser):
     fpi = FootprintInstance()
@@ -79,28 +64,20 @@ if __name__=='__main__':
     kicad = KiCad()
     board = kicad.get_board()
 
-    # tmp_dir = tempfile.mkdtemp()
-    # with tempfile.TemporaryDirectory(dir='copy-layout') as tmp_dir:
-    #     tmp_path = os.path.join(tmp_dir, 'clipboard')
-        #tmp_path = tmp_dir + 'clipboard'
-    #shutil.copy(tmp_dir.name, 'bar.txt')
+    # Hot damn it's hard to persist something temporarily!
+    # None of the tempfile stuff is predictable from invocation to invocation,
+    # so ended up creating a file in the settings path instead.
 
     tmp_dir = kicad.get_plugin_settings_path('copy-layout')
     os.makedirs(tmp_dir, exist_ok=True)
     tmp_path = os.path.join(tmp_dir, 'clipboard')
-    #tmp_path.mkdir(parents=True, exist_ok=True)
-
 
     if len(sys.argv) >= 2 and sys.argv[1] == 'copy':
         with open(tmp_path, 'wb') as f:
-            props = copy_selected_footprint_properties()
-#            pickle.dump(props, f)
-#            json.dump(props, f)
-            f.write(props)
+            selection = serialise_selected_footprint()
+            f.write(selection)
     elif len(sys.argv) >= 2 and sys.argv[1] == 'paste':
         with open(tmp_path, 'rb') as f:
-#            props = pickle.load(f)
-#            props = json.load(f)
             props = get_properties_from_serialised_footprint(f.read())
             paste_footprint_properties(props)
     else:
