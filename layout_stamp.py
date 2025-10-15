@@ -52,6 +52,7 @@ def paste_footprint_properties(props):
                 f_dst.visible = f_src.visible
                 f_dst.layer = f_src.layer
                 f_dst.text.attributes = f_src.text.attributes # argh, where's knockout?
+                f_dst.text.proto.knockout = f_src.text.proto.knockout # oh, dear, finally found it.
                 f_dst.text.layer = f_src.text.layer
                 f_dst.text.position = f_src.text.position + offset
                 break
@@ -68,7 +69,13 @@ if __name__=='__main__':
     # None of the tempfile stuff is predictable from invocation to invocation,
     # so ended up creating a file in the settings path instead.
 
-    tmp_dir = kicad.get_plugin_settings_path('copy-layout')
+    # KiCad currently requires an identifer that is NOT valid. Apparent bug here:
+    # https://gitlab.com/kicad/code/kicad/-/blob/master/common/api/api_handler_common.cpp#L311
+    # That means something that *doesn't* match /[\w\d]{2,}\.[\w\d]+\\.[\w\d]+/
+    # https://gitlab.com/kicad/code/kicad/-/blob/master/common/api/api_plugin.cpp#L203
+    # That is, something *without* 2 or more tokens, dot, 1 or more tokens, dot, 1 or more tokens,
+    # where a "token" is an alphanumeric character or an underscore.
+    tmp_dir = kicad.get_plugin_settings_path('ee,empirical,kipy,layout_stamp')
     os.makedirs(tmp_dir, exist_ok=True)
     tmp_path = os.path.join(tmp_dir, 'clipboard')
 
