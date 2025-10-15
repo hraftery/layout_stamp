@@ -16,7 +16,21 @@
             "scopes": [
                 "pcb"
             ],
-            "entrypoint": "layout_stamp.py",
+            "entrypoint": "layout_stamp-copy.py",
+            "icons-light": [
+                "icons/layout_stamp_24.png",
+                "icons/layout_stamp_48.png"
+            ]
+        },
+        {
+            "identifier": "paste-layout",
+            "name": "Paste Layout",
+            "description": "Paste layout characteristics to the selected footprint",
+            "show-button": true,
+            "scopes": [
+                "pcb"
+            ],
+            "entrypoint": "layout_stamp-paste.py",
             "icons-light": [
                 "icons/layout_stamp_24.png",
                 "icons/layout_stamp_48.png"

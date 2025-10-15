@@ -10,7 +10,7 @@ from kipy.board_types import BoardText, FootprintInstance, Field
 import sys
 import os
 
-def serialise_selected_footprint():
+def serialise_selected_footprint(board):
     selection = board.get_selection()
     if len(selection) != 1:
         print("Select a single footprint first.")
@@ -34,7 +34,7 @@ def get_properties_from_serialised_footprint(ser):
 
     return props
 
-def paste_footprint_properties(props):
+def paste_footprint_properties(board, props):
     selection = board.get_selection()
     if len(selection) != 1:
         print("Select a single footprint first.")
@@ -61,7 +61,7 @@ def paste_footprint_properties(props):
     board.update_items(s)
 
 
-if __name__=='__main__':
+def main(argv):
     kicad = KiCad()
     board = kicad.get_board()
 
@@ -79,13 +79,17 @@ if __name__=='__main__':
     os.makedirs(tmp_dir, exist_ok=True)
     tmp_path = os.path.join(tmp_dir, 'clipboard')
 
-    if len(sys.argv) >= 2 and sys.argv[1] == 'copy':
+    if len(argv) >= 2 and argv[1] == 'copy':
         with open(tmp_path, 'wb') as f:
-            selection = serialise_selected_footprint()
+            selection = serialise_selected_footprint(board)
             f.write(selection)
-    elif len(sys.argv) >= 2 and sys.argv[1] == 'paste':
+    elif len(argv) >= 2 and argv[1] == 'paste':
         with open(tmp_path, 'rb') as f:
             props = get_properties_from_serialised_footprint(f.read())
-            paste_footprint_properties(props)
+            paste_footprint_properties(board, props)
     else:
         print("Must pass 'copy' or 'paste' as argument.")
+
+
+if __name__=='__main__':
+    main(sys.argv)
