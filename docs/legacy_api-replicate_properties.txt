@@ -1,0 +1,41 @@
+import pcbnew
+pcb = pcbnew.GetBoard()
+
+def get_selected_footprint():
+    for fp in pcb.GetFootprints():
+        if fp.IsSelected():
+            return fp
+    return None
+
+
+def get_selected_footprint_properties():
+    selected_footprint = get_selected_footprint()    
+    if selected_footprint is None:
+        print("Select a footprint first.")
+        return None
+
+    props = {}
+    props['position'] = selected_footprint.GetPosition()
+    props['orientation'] = selected_footprint.GetOrientation()
+    props['fields'] = selected_footprint.GetFields()
+    
+    return props
+
+def apply_footprint_properties(props):
+    selected_footprint = get_selected_footprint()    
+    if selected_footprint is None:
+        print("Select a footprint first.")
+        return None
+    
+    offset = selected_footprint.GetPosition() - props['position']
+    
+    selected_footprint.SetOrientation(props['orientation'])
+    for f_src in props['fields']:
+        for f_dst in selected_footprint.GetFields():
+            if f_src.GetName() == f_dst.GetName():
+                f_dst.SetAttributes(f_src.GetAttributes())
+                f_dst.SetIsKnockout(f_src.IsKnockout())
+                f_dst.SetLayer(f_src.GetLayer())
+                f_dst.SetPosition(f_src.GetPosition() + offset)
+                break
+

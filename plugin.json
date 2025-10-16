@@ -18,8 +18,8 @@
             ],
             "entrypoint": "layout_stamp-copy.py",
             "icons-light": [
-                "icons/layout_stamp_24.png",
-                "icons/layout_stamp_48.png"
+                "icons/layout_stamp_copy_24.png",
+                "icons/layout_stamp_copy_48.png"
             ]
         },
         {
@@ -32,8 +32,8 @@
             ],
             "entrypoint": "layout_stamp-paste.py",
             "icons-light": [
-                "icons/layout_stamp_24.png",
-                "icons/layout_stamp_48.png"
+                "icons/layout_stamp_paste_24.png",
+                "icons/layout_stamp_paste_48.png"
             ]
         }
     ]

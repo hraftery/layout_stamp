@@ -75,6 +75,7 @@ def main(argv):
     # https://gitlab.com/kicad/code/kicad/-/blob/master/common/api/api_plugin.cpp#L203
     # That is, something *without* 2 or more tokens, dot, 1 or more tokens, dot, 1 or more tokens,
     # where a "token" is an alphanumeric character or an underscore.
+    # Bug report: https://gitlab.com/kicad/code/kicad/-/issues/22007
     tmp_dir = kicad.get_plugin_settings_path('ee,empirical,kipy,layout_stamp')
     os.makedirs(tmp_dir, exist_ok=True)
     tmp_path = os.path.join(tmp_dir, 'clipboard')
