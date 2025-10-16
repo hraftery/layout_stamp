@@ -11,7 +11,8 @@ The **Layout Stamp** plugin allows you to layout the fields of a footprint in th
 
 The plugin will copy characteristics such as visibility, orientation, size, knockout and relative position.
 
-![screen capture](https://vimeo.com/1127834200?share=copy&fl=sv&fe=ci)
+A video is worth a million words - click to watch this screencapture:
+[![Watch the screen capture](docs/screencapture_thumb.jpg)](https://vimeo.com/1127834200?share=copy&fl=sv&fe=ci)
 
 ## Compatibility
 This plugin uses the new IPC API in KiCad 9. It has been tested to work on 9.0.4 and 9.0.5 on Mac.
@@ -47,7 +48,7 @@ Plugin code licensed under MIT, see `LICENSE` for more info.
 
 ### Useful References
 
-This functionality was prototyped using the legacy KiCad API. Since that API is generally better understood at the moment, comparing this project to the prototype provides insight into the new IPC API. The prototype can be found [here](doc/legacy_api-replicate_properties.txt).
+This functionality was prototyped using the legacy KiCad API. Since that API is generally better understood at the moment, comparing this project to the prototype provides insight into the new IPC API. The prototype can be found [here](docs/legacy_api-replicate_properties.txt).
 
 References used to guide development:
 
